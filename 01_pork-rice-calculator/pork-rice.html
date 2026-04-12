@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>หมูทอดข้าว — คำนวณต้นทุน</title>
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Sarabun", sans-serif;
+        background: #f5f3ee;
+        color: #1a1a1a;
+        min-height: 100vh;
+        padding: 2rem 1rem;
+      }
+
+      h1 {
+        font-size: 20px;
+        font-weight: 500;
+        margin-bottom: 1.5rem;
+        color: #1a1a1a;
+      }
+
+      .container {
+        max-width: 560px;
+        margin: 0 auto;
+      }
+
+      .card {
+        background: #fff;
+        border: 0.5px solid rgba(0, 0, 0, 0.12);
+        border-radius: 12px;
+        padding: 1rem 1.25rem;
+        margin-bottom: 1rem;
+      }
+
+      .metric {
+        background: #f5f3ee;
+        border-radius: 8px;
+        padding: 0.75rem 1rem;
+      }
+
+      .metric-label {
+        font-size: 12px;
+        color: #888;
+        margin-bottom: 4px;
+      }
+
+      .metric-value {
+        font-size: 22px;
+        font-weight: 500;
+        color: #1a1a1a;
+      }
+
+      .grid2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-bottom: 1rem;
+      }
+      .grid4 {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+        margin-bottom: 1rem;
+      }
+
+      .slider-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 14px;
+      }
+
+      .slider-label {
+        font-size: 13px;
+        color: #888;
+        min-width: 56px;
+      }
+
+      .slider-val {
+        font-size: 13px;
+        font-weight: 500;
+        min-width: 48px;
+        text-align: right;
+        color: #1a1a1a;
+      }
+
+      input[type="range"] {
+        flex: 1;
+        -webkit-appearance: none;
+        height: 4px;
+        border-radius: 2px;
+        background: #ddd;
+        outline: none;
+      }
+
+      input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #1a1a1a;
+        cursor: pointer;
+      }
+
+      .bar-wrap {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 8px;
+      }
+
+      .bar-label {
+        font-size: 12px;
+        min-width: 32px;
+        color: #888;
+      }
+
+      .bar-track {
+        flex: 1;
+        height: 16px;
+        background: #f0ede8;
+        border-radius: 8px;
+        overflow: hidden;
+      }
+
+      .bar-fill {
+        height: 100%;
+        border-radius: 8px;
+        transition: width 0.25s;
+      }
+
+      .bar-num {
+        font-size: 12px;
+        min-width: 40px;
+        text-align: right;
+        color: #1a1a1a;
+      }
+
+      .section-title {
+        font-size: 13px;
+        color: #888;
+        margin-bottom: 12px;
+        font-weight: 500;
+      }
+
+      hr {
+        border: none;
+        border-top: 0.5px solid rgba(0, 0, 0, 0.1);
+        margin: 12px 0;
+      }
+
+      .color-success {
+        color: #0f6e56;
+      }
+      .color-warning {
+        color: #854f0b;
+      }
+      .color-danger {
+        color: #a32d2d;
+      }
+      .color-muted {
+        color: #888;
+      }
+
+      #rice-status {
+        font-size: 13px;
+        color: #888;
+        margin-top: 10px;
+      }
+    </style>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <h1>หมูทอดข้าว — คำนวณต้นทุน</h1>
+
+      <div class="card">
+        <p class="section-title">ปรับสัดส่วนต่อห่อ (อิสระ)</p>
+
+        <div class="slider-row">
+          <span class="slider-label">หมู</span>
+          <input
+            type="range"
+            min="10"
+            max="200"
+            value="30"
+            step="5"
+            id="pork-g"
+            oninput="calc()"
+          />
+          <span class="slider-val" id="pork-out">30 ก.</span>
+        </div>
+        <div class="slider-row">
+          <span class="slider-label">ข้าว</span>
+          <input
+            type="range"
+            min="10"
+            max="200"
+            value="20"
+            step="5"
+            id="rice-g"
+            oninput="calc()"
+          />
+          <span class="slider-val" id="rice-out">20 ก.</span>
+        </div>
+        <div class="slider-row">
+          <span class="slider-label">ราคาขาย</span>
+          <input
+            type="range"
+            min="10"
+            max="60"
+            value="20"
+            step="1"
+            id="price-g"
+            oninput="calc()"
+          />
+          <span class="slider-val" id="price-out">20 ฿</span>
+        </div>
+
+        <hr />
+
+        <div class="bar-wrap">
+          <span class="bar-label">หมู</span>
+          <div class="bar-track">
+            <div
+              class="bar-fill"
+              id="bar-pork"
+              style="background: #d85a30"
+            ></div>
+          </div>
+          <span class="bar-num" id="bar-pork-pct">—</span>
+        </div>
+        <div class="bar-wrap">
+          <span class="bar-label">ข้าว</span>
+          <div class="bar-track">
+            <div
+              class="bar-fill"
+              id="bar-rice"
+              style="background: #378add"
+            ></div>
+          </div>
+          <span class="bar-num" id="bar-rice-pct">—</span>
+        </div>
+        <div class="bar-wrap">
+          <span class="bar-label" style="color: #bbb">กำไร</span>
+          <div class="bar-track">
+            <div
+              class="bar-fill"
+              id="bar-profit"
+              style="background: #1d9e75"
+            ></div>
+          </div>
+          <span class="bar-num" id="bar-profit-pct">—</span>
+        </div>
+      </div>
+
+      <div class="grid4">
+        <div class="metric">
+          <p class="metric-label">ต้นทุน/ห่อ</p>
+          <p class="metric-value" id="cost-val">—</p>
+        </div>
+        <div class="metric">
+          <p class="metric-label">กำไร/ห่อ</p>
+          <p class="metric-value" id="profit-val">—</p>
+        </div>
+        <div class="metric">
+          <p class="metric-label">x ต้นทุน</p>
+          <p class="metric-value" id="markup-val">—</p>
+        </div>
+        <div class="metric">
+          <p class="metric-label">% กำไร</p>
+          <p class="metric-value" id="margin-val">—</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <p class="section-title">ถ้าขายหมดทั้งหมด (จากหมู 2.7 กก.)</p>
+        <div class="grid2">
+          <div class="metric">
+            <p class="metric-label">จำนวนห่อ</p>
+            <p class="metric-value" id="bags-val">—</p>
+          </div>
+          <div class="metric">
+            <p class="metric-label">กำไรสุทธิรวม</p>
+            <p class="metric-value" id="net-val">—</p>
+          </div>
+        </div>
+        <div id="rice-status"></div>
+      </div>
+    </div>
+
+    <script>
+      const PORK_TOTAL_G = 2700 * 0.8;
+      const PORK_CPG = 428.45 / PORK_TOTAL_G;
+      const RICE_TOTAL_G = 1500 * (700 / 500);
+      const RICE_CPG = 52.5 / RICE_TOTAL_G;
+
+      function calc() {
+        const pg = parseInt(document.getElementById("pork-g").value);
+        const rg = parseInt(document.getElementById("rice-g").value);
+        const price = parseInt(document.getElementById("price-g").value);
+
+        document.getElementById("pork-out").textContent = pg + " ก.";
+        document.getElementById("rice-out").textContent = rg + " ก.";
+        document.getElementById("price-out").textContent = price + " ฿";
+
+        const costPork = pg * PORK_CPG;
+        const costRice = rg * RICE_CPG;
+        const totalCost = costPork + costRice;
+        const profit = price - totalCost;
+        const margin = (profit / price) * 100;
+        const markup = price / totalCost;
+
+        const porkPct = Math.round((costPork / price) * 100);
+        const ricePct = Math.round((costRice / price) * 100);
+        const profitPct = Math.max(0, Math.round((profit / price) * 100));
+
+        document.getElementById("bar-pork").style.width = porkPct + "%";
+        document.getElementById("bar-rice").style.width = ricePct + "%";
+        document.getElementById("bar-profit").style.width = profitPct + "%";
+        document.getElementById("bar-pork-pct").textContent = porkPct + "%";
+        document.getElementById("bar-rice-pct").textContent = ricePct + "%";
+        document.getElementById("bar-profit-pct").textContent = profitPct + "%";
+
+        document.getElementById("cost-val").textContent =
+          totalCost.toFixed(2) + " ฿";
+
+        const profitEl = document.getElementById("profit-val");
+        profitEl.textContent = profit.toFixed(2) + " ฿";
+        profitEl.className =
+          "metric-value " + (profit >= 0 ? "color-success" : "color-danger");
+
+        const markupEl = document.getElementById("markup-val");
+        markupEl.textContent = markup.toFixed(2) + "x";
+        markupEl.className =
+          "metric-value " +
+          (markup >= 3
+            ? "color-success"
+            : markup >= 2
+              ? "color-warning"
+              : "color-danger");
+
+        const marginEl = document.getElementById("margin-val");
+        marginEl.textContent = margin.toFixed(1) + "%";
+        marginEl.className =
+          "metric-value " +
+          (margin >= 60
+            ? "color-success"
+            : margin >= 40
+              ? "color-warning"
+              : "color-danger");
+
+        const bags = Math.floor(PORK_TOTAL_G / pg);
+        const netProfit = bags * profit;
+        document.getElementById("bags-val").textContent = bags + " ห่อ";
+
+        const netEl = document.getElementById("net-val");
+        netEl.textContent = netProfit.toFixed(0) + " ฿";
+        netEl.className =
+          "metric-value " + (netProfit >= 0 ? "color-success" : "color-danger");
+
+        const riceUsed = bags * rg;
+        const riceLeftG = RICE_TOTAL_G - riceUsed;
+        const riceStatus = document.getElementById("rice-status");
+        if (riceLeftG >= 0) {
+          riceStatus.textContent =
+            "ข้าวเหลือ " +
+            Math.round(riceLeftG) +
+            " ก. (" +
+            ((riceLeftG / RICE_TOTAL_G) * 100).toFixed(0) +
+            "% ของที่หุง)";
+          riceStatus.className = "color-muted";
+        } else {
+          riceStatus.textContent =
+            "ข้าวไม่พอ ขาดอีก " + Math.round(-riceLeftG) + " ก. — ต้องหุงเพิ่ม";
+          riceStatus.className = "color-danger";
+        }
+      }
+
+      calc();
+    </script>
+  </body>
+</html>
