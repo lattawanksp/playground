@@ -1,0 +1,34 @@
+Given an array, write a program to:
+find the sum of all numbers in the array (No reduce)/
+find the average of all numbers in the array/
+find the median of the array (What is median? then you can find the way to solve)
+
+Write a program that finds the factorial of a given number. Input should be non-negative integer.
+
+คำแปลโจทย์ (Translation)
+หาผลรวม (Sum): ให้เขียนโปรแกรมหาผลรวมของตัวเลขทุกตัวใน Array โดย "ห้ามใช้ฟังก์ชัน reduce"
+หาค่าเฉลี่ย (Average): ให้เขียนโปรแกรมหาค่าเฉลี่ยของตัวเลขทั้งหมดใน Array
+หาค่ามัธยฐาน (Median): ให้เขียนโปรแกรมหาค่ามัธยฐานของ Arrayคำใบ้: ค่ามัธยฐานคืออะไร? (คือค่าที่อยู่ตรงกลางเมื่อเรียงข้อมูลจากน้อยไปมาก) เมื่อรู้แล้วให้หาวิธีแก้โจทย์นี้หาค่าแฟกทอเรียล (Factorial): ให้เขียนโปรแกรมหาค่า Factorial ($n!$) ของตัวเลขที่กำหนด โดย Input ต้องเป็นจำนวนเต็มที่ไม่ติดลบ
+
+----------------------------------------------------------
+
+Write a program that checks if a given string is a palindrome.
+
+Given a string, write a program that checks if it is a palindrome.
+A palindrome is a word, phrase, number, or other sequence of characters that reads the same forward and backward. 
+For example, "racecar" is a palindrome, while "hello" is not. The program should return True if the string is a palindrome and False if it is not.
+
+คำแปลโจทย์
+หัวข้อ: จงเขียนโปรแกรมสำหรับตรวจสอบว่าข้อความที่กำหนดให้เป็น "พาลินโดรม" (Palindrome) หรือไม่
+
+รายละเอียด:
+จงเขียนโปรแกรมเพื่อเช็กว่าข้อความ (String) ที่ได้รับมานั้นเป็นพาลินโดรมหรือไม่
+
+พาลินโดรม คืออะไร?
+คือคำ, วลี, ตัวเลข หรือลำดับตัวอักษรใดๆ ที่อ่านจากหน้าไปหลัง หรืออ่านจากหลังมาหน้าแล้วเหมือนกันทุกประการ
+
+ตัวอย่าง:
+
+"racecar" อ่านย้อนกลับก็ได้ "racecar" → โปรแกรมต้องตอบว่า True (ใช่)
+
+"hello" อ่านย้อนกลับได้ "olleh" → โปรแกรมต้องตอบว่า False (ไม่ใช่)
