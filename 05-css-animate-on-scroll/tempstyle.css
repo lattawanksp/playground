@@ -1,0 +1,36 @@
+h1 {
+  display: flex;
+  justify-content: center;
+}
+
+.view {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 500px;
+}
+
+.block:nth-child(4n) {
+  background: #e76f51;
+  width: 800px;
+  height: 300px;
+}
+
+.block:nth-child(4n + 1) {
+  background: #3a86ff;
+  width: 600px;
+  height: 300px;
+}
+
+.block:nth-child(4n + 2) {
+  background: #2ec4b6;
+  width: 400px;
+  height: 300px;
+}
+
+.block:nth-child(4n + 3) {
+  background: #e9c46a;
+  width: 200px;
+  height: 300px;
+}
